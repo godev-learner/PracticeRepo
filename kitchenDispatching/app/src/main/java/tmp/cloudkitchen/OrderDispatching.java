@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class OrderDispatching {
 
@@ -93,32 +92,32 @@ public abstract class OrderDispatching {
     abstract void dispatch(List<Order> l, List<Long> lstOfCourierPrepDuraion) throws InterruptedException;
 
 
-    private long foodWaitAccum;
-    private long courierWaitAccum;
-    private int orderAccum;
+    private long totalFoodWait;
+    private long totalCourierWait;
+    private int orderCount;
 
-    public long getFoodWaitAccum() {
-        return foodWaitAccum;
+    public long getTotalFoodWait() {
+        return totalFoodWait;
     }
 
-    public long getCourierWaitAccum() {
-        return courierWaitAccum;
+    public long getTotalCourierWait() {
+        return totalCourierWait;
     }
 
-    public int getOrderAccum() {
-        return orderAccum;
+    public int getOrderCount() {
+        return orderCount;
     }
 
     protected synchronized void statsAccumulate(Order order) {
-        orderAccum++;
-        foodWaitAccum += order.foodWaitDuration;
-        courierWaitAccum += order.courier.waitDuration;
+        orderCount++;
+        totalFoodWait += order.foodWaitDuration;
+        totalCourierWait += order.courier.waitDuration;
 
-        logger.info("{} orders: newOrder:{}", orderAccum, order);
+        logger.info("{} orders: newOrder:{}", orderCount, order);
     }
 
     public void printResult() {
-        logger.info(" Result: {}.dispatching:avg food wait milliseconds:{}, avg courier wait milliseconds:{}", this, foodWaitAccum, courierWaitAccum);
+        logger.info(" Result: {}.dispatching:avg food wait milliseconds:{}, avg courier wait milliseconds:{}", this, totalFoodWait, totalCourierWait);
     }
 
 }

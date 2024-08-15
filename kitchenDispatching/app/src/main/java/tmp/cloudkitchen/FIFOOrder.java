@@ -16,7 +16,7 @@ public class FIFOOrder extends OrderDispatching {
         LinkedBlockingQueue<Order> ordersQueue = new LinkedBlockingQueue<>();
         LinkedBlockingQueue<Courier> couriersQueue = new LinkedBlockingQueue<>();
 
-        final int totalSize = lstOfOrders.size();
+        final int numOfOrders = lstOfOrders.size();
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(16);
 
@@ -49,8 +49,8 @@ public class FIFOOrder extends OrderDispatching {
             courier.pickUp(order, pickUpTime);
             statsAccumulate(order);
             counter++;
-            logger.debug("count:{}/{}>>courier:{},pickup order:{}, isdone:{}", counter, totalSize, courier, order, task.isDone());
-            if (counter == totalSize) {
+            logger.debug("count:{}/{}>>courier:{},pickup order:{}, isdone:{}", counter, numOfOrders, courier, order, task.isDone());
+            if (counter == numOfOrders) {
                 break;
             }
         }
